@@ -18,11 +18,21 @@ class App extends React.Component {
 
   }
 
-  handleResponse() {
-    let newData = {};
-    newData = searchYouTube({query: 'bikes', max: 5, key: YOUTUBE_API_KEY}, function(data) { newData = data; });
-    console.log(newData);
+  componentDidMount() {
+
+    this.handleResponse('bikes');
+
   }
+
+  handleResponse(query) {
+    //let newData = {};
+    searchYouTube({query: query, max: 5, key: YOUTUBE_API_KEY}, (videos) =>
+      this.setState({
+        videos: videos,
+        currentVideo: videos[0]
+      }));
+  }
+  //console.log(newData);
   changeCurrentVideo(event) {
   //changeCurrentVideo = function(video) {
     this.setState({
@@ -32,12 +42,11 @@ class App extends React.Component {
   }
 
   render() {
-    this.handleResponse();
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search handleSearchInputChange={this. handleResponse.bind(this)}/>
           </div>
         </nav>
         <div className="row">
